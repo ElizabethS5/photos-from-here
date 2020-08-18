@@ -27,6 +27,15 @@ class PhotoSet extends React.Component {
     clearInterval(this.timer);
   };
 
+  getUrl = () => {
+    let url = `https://shrouded-mountain-15003.herokuapp.com/https://flickr.com/services/rest/?api_key=${this.state.key}&format=json&nojsoncallback=1&method=flickr.photos.search&safe_search=1&per_page=5&lat=${this.state.coords.latitude}&lon=${this.state.coords.longitude}`;
+
+    if (this.state.text.trim()) {
+      url += "&text=" + this.state.text;
+    }
+    return url;
+  };
+
   updateCoords = () => {
     navigator.geolocation.getCurrentPosition((location) => {
       this.setState({
@@ -34,6 +43,7 @@ class PhotoSet extends React.Component {
           longitude: location.coords.longitude,
           latitude: location.coords.latitude,
         },
+        index: 0,
       });
     });
   };
@@ -43,7 +53,7 @@ class PhotoSet extends React.Component {
       .then((res) => res.json())
       .then((data) => {
         let photos = data.photos.photo;
-        return this.setState({ photos });
+        return this.setState({ photos, index: 0 });
       });
   };
 
@@ -65,11 +75,8 @@ class PhotoSet extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    let url = `https://shrouded-mountain-15003.herokuapp.com/https://flickr.com/services/rest/?api_key=${this.state.key}&format=json&nojsoncallback=1&method=flickr.photos.search&safe_search=1&per_page=5&lat=${this.state.coords.latitude}&lon=${this.state.coords.longitude}`;
-
-    if (this.state.text) {
-      url = url + "&text=" + this.state.text;
-    }
+    let url = this.getUrl();
+    console.log(url);
     this.getPhotos(url);
   };
 
@@ -85,13 +92,8 @@ class PhotoSet extends React.Component {
       return <div>Getting location...</div>;
     }
 
-    let url = `https://shrouded-mountain-15003.herokuapp.com/https://flickr.com/services/rest/?api_key=${this.state.key}&format=json&nojsoncallback=1&method=flickr.photos.search&safe_search=1&per_page=5&lat=${this.state.coords.latitude}&lon=${this.state.coords.longitude}`;
-
-    if (this.state.text) {
-      url = url + "&text=" + this.state.text;
-    }
-
     if (this.state.photos.length === 0) {
+      let url = this.getUrl();
       this.getPhotos(url);
       return <div>Getting photos...</div>;
     }

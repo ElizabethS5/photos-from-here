@@ -13,6 +13,7 @@ function Form(props) {
             name="latitude"
             max={90}
             min={-90}
+            step={0.0000001}
           />
         </label>
         <label>
@@ -24,6 +25,7 @@ function Form(props) {
             name="longitude"
             max={180}
             min={-180}
+            step={0.0000001}
           />
         </label>
         <label>
