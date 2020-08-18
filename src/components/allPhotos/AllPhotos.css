@@ -1,0 +1,15 @@
+.AllPhotos {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.AllPhotos img {
+  width: 100%;
+  height: 100px;
+}
+
+.AllPhotos div {
+  font-size: 8px;
+}
